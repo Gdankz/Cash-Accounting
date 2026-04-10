@@ -59,12 +59,19 @@ func main() {
 
 	r.POST("/api/transactions", func(c *gin.Context) {
 		var newTransaction Transaction
-		if err := c.ShouldBindBodyWithJSON(&newTransaction); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to save Transaction to Database"})
+
+		if err := c.BindJSON(&newTransaction); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON payload"})
+		}
+
+		newTransaction.CreatedAt = time.Now()
+
+		if err := db.Create(&newTransaction).Error; err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create transaction"})
 			return
 		}
 
-		c.JSON(http.StatusOK, newTransaction)
+		c.JSON(http.StatusCreated, newTransaction)
 	})
 
 	r.DELETE("/api/transactions/:id", func(c *gin.Context) {
