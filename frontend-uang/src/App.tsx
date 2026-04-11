@@ -141,26 +141,26 @@ export default function App() {
     return (
         <div className="min-h-screen bg-slate-50 flex flex-col relative overflow-hidden">
           <Toaster position="top-right" />
-          <header className="p-8"><h1 className="text-2xl font-bold flex items-center text-slate-800"><Home className="mr-2 text-teal-500" /> HomeBudget</h1></header>
+          <header className="p-8"><h1 className="text-2xl font-bold flex items-center text-slate-800"><Home className="mr-2 text-blue-500" /> Penghitung Uang</h1></header>
           <main className="flex-1 flex items-center justify-center max-w-6xl mx-auto w-full px-6 z-10">
             <div className="w-full max-w-md">
               <h2 className="text-5xl font-extrabold text-slate-800 leading-tight mb-4">
-                Take Control <br/> of <span className="text-teal-500">Your Money</span>
+                Take Control <br/> of <span className="text-blue-500">Your Money</span>
               </h2>
               <p className="text-slate-600 text-lg mb-8">Personal budgeting is the secret to financial freedom. Start your journey today.</p>
               <form onSubmit={handleLogin} className="space-y-4">
                 <input type="text" placeholder="Siapa namamu?" value={loginName} onChange={(e) => setLoginName(e.target.value)} required
-                       className="w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                       className="w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-500" />
                 <button type="submit" className="bg-slate-900 text-white px-6 py-3 rounded-md flex items-center hover:bg-slate-800 transition">
                   Masuk <UserPlus className="ml-2" size={18} />
                 </button>
               </form>
             </div>
             <div className="hidden md:flex flex-1 justify-center">
-              <BarChart2 size={300} className="text-teal-200" strokeWidth={1} />
+              <BarChart2 size={300} className="text-blue-200" strokeWidth={1} />
             </div>
           </main>
-          <div className="absolute bottom-0 w-full h-48 bg-teal-500 rounded-t-[100%] scale-150 translate-y-24"></div>
+          <div className="absolute bottom-0 w-full h-48 bg-blue-500 rounded-t-[100%] scale-150 translate-y-24"></div>
         </div>
     );
   }
@@ -175,8 +175,8 @@ export default function App() {
         <div className="min-h-screen bg-slate-50 flex flex-col relative overflow-hidden pb-32">
           <Toaster position="top-right" />
           <header className="p-6 flex justify-between items-center max-w-6xl mx-auto w-full">
-            <button onClick={() => setSelectedBudget(null)} className="text-xl font-bold flex items-center text-slate-800 hover:text-teal-600 transition">
-              <Home className="mr-2 text-teal-500" /> HomeBudget
+            <button onClick={() => setSelectedBudget(null)} className="text-xl font-bold flex items-center text-slate-800 hover:text-blue-600 transition">
+              <Home className="mr-2 text-blue-500" /> Pencatat Uang
             </button>
             <button onClick={handleLogout} className="text-red-500 border border-red-500 px-4 py-2 rounded-md hover:bg-red-50 flex items-center">
               Keluar <Trash2 size={16} className="ml-2" />
@@ -262,7 +262,7 @@ export default function App() {
               </div>
             </div>
           </main>
-          <div className="absolute bottom-0 w-full h-32 bg-teal-500 rounded-t-[100%] scale-150 translate-y-16 -z-0"></div>
+          <div className="absolute bottom-0 w-full h-32 bg-blue-500 rounded-t-[100%] scale-150 translate-y-16 -z-0"></div>
         </div>
     );
   }
@@ -272,7 +272,7 @@ export default function App() {
       <div className="min-h-screen bg-slate-50 flex flex-col relative overflow-hidden">
         <Toaster position="top-right" />
         <header className="p-6 flex justify-between items-center max-w-6xl mx-auto w-full">
-          <h1 className="text-2xl font-bold flex items-center text-slate-800"><Home className="mr-2 text-teal-500" /> HomeBudget</h1>
+          <h1 className="text-2xl font-bold flex items-center text-slate-800"><Home className="mr-2 text-blue-500" /> Pencatat Uang</h1>
           <button onClick={handleLogout} className="text-red-500 border border-red-300 px-4 py-2 rounded-md hover:bg-red-50 flex items-center transition">
             Keluar <Trash2 size={16} className="ml-2" />
           </button>
@@ -281,7 +281,7 @@ export default function App() {
         <main className="flex-1 max-w-6xl mx-auto w-full px-6 mt-10 z-10 space-y-8">
           <div>
             <h2 className="text-5xl font-extrabold text-slate-800 mb-4">
-              Selamat datang, <span className="text-teal-500">{userName}</span>
+              Selamat datang, <span className="text-blue-500">{userName}</span>
             </h2>
             <p className="text-slate-600 text-lg mb-2">Personal budgeting is the secret to financial freedom.</p>
             <p className="text-slate-600 font-medium">Buat anggaran pertamamu untuk mulai!</p>
@@ -294,7 +294,7 @@ export default function App() {
                 <div>
                   <label className="block text-sm font-semibold mb-1">Nama Anggaran</label>
                   <input type="text" placeholder="cth: Belanja Bulanan" value={budgetName} onChange={(e) => setBudgetName(e.target.value)} required
-                         className="w-full border-2 border-teal-500 rounded-md p-2 focus:outline-none" />
+                         className="w-full border-2 border-blue-500 rounded-md p-2 focus:outline-none" />
                 </div>
                 <div>
                   <label className="block text-sm font-semibold mb-1">Maksimal Dana (Rp)</label>
@@ -316,13 +316,13 @@ export default function App() {
                     const spent = calculateSpent(budget.expenses);
                     return (
                         <div key={budget.id} onClick={() => setSelectedBudget(budget)}
-                             className="bg-white p-5 rounded-xl shadow-sm border border-slate-100 cursor-pointer hover:border-teal-500 transition group">
+                             className="bg-white p-5 rounded-xl shadow-sm border border-slate-100 cursor-pointer hover:border-blue-500 transition group">
                           <div className="flex justify-between items-center mb-2">
-                            <h4 className="font-bold text-lg text-slate-800 group-hover:text-teal-600">{budget.name}</h4>
+                            <h4 className="font-bold text-lg text-slate-800 group-hover:text-blue-600">{budget.name}</h4>
                             <p className="font-semibold text-slate-600">{formatIDR(budget.amount)}</p>
                           </div>
                           <div className="w-full bg-gray-100 rounded-full h-2">
-                            <div className="bg-teal-500 h-2 rounded-full" style={{ width: `${Math.min((spent/budget.amount)*100, 100)}%` }}></div>
+                            <div className="bg-blue-500 h-2 rounded-full" style={{ width: `${Math.min((spent/budget.amount)*100, 100)}%` }}></div>
                           </div>
                         </div>
                     )
@@ -332,7 +332,7 @@ export default function App() {
           </div>
         </main>
 
-        <div className="absolute bottom-0 w-full h-48 bg-teal-500 rounded-t-[100%] scale-150 translate-y-24 -z-0"></div>
+        <div className="absolute bottom-0 w-full h-48 bg-blue-500 rounded-t-[100%] scale-150 translate-y-24 -z-0"></div>
       </div>
   );
 }
