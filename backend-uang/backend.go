@@ -11,11 +11,18 @@ import (
 	"gorm.io/gorm"
 )
 
-type Transaction struct {
-	ID        uint      `gorm:"primaryKey" json:"id"`
-	Title     string    `json:"title"`
+type Budget struct {
+	ID        uint      `gorm:"primarykey" json:"id"`
+	Name      string    `json:"name"`
 	Amount    float64   `json:"amount"`
-	Type      string    `json:"type"`
+	Expenses  []Expense `gorm:"foreignkey:BudgetID" json:"expenses" constraint:OnDelete:CASCADE;"`
+	CreatedAt time.Time `json:"created_at"`
+}
+type Expense struct {
+	ID        uint      `gorm:"primarykey" json:"id"`
+	BudgetID  uint      `json:"budget_id"`
+	Name      string    `json:"name"`
+	Amount    float64   `json:"amount"`
 	CreatedAt time.Time `json:"created_at"`
 }
 
@@ -30,11 +37,7 @@ func initDB() {
 		log.Fatal("failed to connect database", err)
 	}
 
-	err = db.AutoMigrate(&Transaction{})
-	if err != nil {
-		log.Fatal("failed to migrate database", err)
-	}
-
+	db.AutoMigrate(&Budget{}, &Expense{})
 	log.Println("Database PostgreSQL connected")
 }
 
@@ -45,36 +48,52 @@ func main() {
 
 	r.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"http://localhost:5173"},
-		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},
+		AllowMethods:     []string{"GET", "POST", "DELETE"},
 		AllowHeaders:     []string{"Origin", "Content-Type"},
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
 	}))
 
-	r.GET("/api/transactions", func(c *gin.Context) {
-		var transactions []Transaction
-		db.Order("created_at desc").Find(&transactions)
-		c.JSON(http.StatusOK, transactions)
+	r.GET("/api/budgets", func(c *gin.Context) {
+		var budgets []Budget
+		db.Preload("Expenses").Order("created_at desc").Find(&budgets)
+		c.JSON(http.StatusOK, budgets)
 	})
 
-	r.POST("/api/transactions", func(c *gin.Context) {
-		var newTransaction Transaction
-		if err := c.ShouldBindBodyWithJSON(&newTransaction); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to save Transaction to Database"})
+	r.POST("/api/budgets", func(c *gin.Context) {
+		var newBudget Budget
+		if err := c.ShouldBind(&newBudget); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Format salah"})
 			return
 		}
-
-		c.JSON(http.StatusOK, newTransaction)
+		newBudget.CreatedAt = time.Now()
+		db.Create(&newBudget)
+		c.JSON(http.StatusCreated, newBudget)
 	})
 
-	r.DELETE("/api/transactions/:id", func(c *gin.Context) {
+	r.DELETE("/api/budgets/:id", func(c *gin.Context) {
 		id := c.Param("id")
-		if err := db.Delete(&Transaction{}, id).Error; err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to delete transaction"})
+		db.Delete(&Budget{}, id)
+		c.JSON(http.StatusOK, gin.H{"message": "Budget berhasil dihapus"})
+	})
+
+	r.POST("/api/expenses", func(c *gin.Context) {
+		var newExpenses Expense
+		if err := c.ShouldBind(&newExpenses); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Format salah"})
 			return
 		}
-		c.JSON(http.StatusOK, gin.H{"message": "Transaction deleted successfully"})
+		newExpenses.CreatedAt = time.Now()
+		db.Create(&newExpenses)
+		c.JSON(http.StatusCreated, newExpenses)
+	})
+
+	r.DELETE("/api/expenses/:id", func(c *gin.Context) {
+		id := c.Param("id")
+		db.Delete(&Expense{}, id)
+		c.JSON(http.StatusOK, gin.H{"message": "Expenses berhasil dihapus"})
 	})
 
 	r.Run(":8080")
+
 }
